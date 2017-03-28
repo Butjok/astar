@@ -21,7 +21,7 @@ import new as a2
 
 
 def main():
-	start = (0, 0)
+	start = (width/2, height/2)
 	goal = (width - 1, height - 1)
 	g = grid.generate(10, width, height)
 
@@ -30,17 +30,18 @@ def main():
 	_cost2 = lambda _, pos: g[pos[Y]][pos[X]]
 
 	zero = lambda a, b: 0
+	_zero = lambda a: 0
 
 	_manhattan = lambda p: manhattan(p, goal)
 
 	t1=time.time()
-	path = a.astar(start, _neigh, _goal, 0, _cost2, _manhattan)
+	path = a.astar(start, _neigh, _goal, 0, _cost2, _zero)
 	t2 = time.time()
 	path2 = a2.astar(
 		g,
 		start,
 		goal,
-		manhattan
+		zero
 	)
 	t3 = time.time()
 
