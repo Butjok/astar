@@ -19,8 +19,10 @@ def astar(grid, start_pos, goal, heuristic, max_g=maxint):
 	def cost(pos):
 		return grid[pos[Y]][pos[X]]
 
-	def node(g, pos, parent_pos):
-		return [g + heuristic(pos, goal), heuristic(pos, goal), ids.next(), g, pos, parent_pos, True, True]
+	def node(g, pos, parent_pos, h=None):
+		if h is None:
+			h = heuristic(pos, goal)
+		return [g + h, h, ids.next(), g, pos, parent_pos, True, True]
 
 	ids = iter(xrange(maxint))
 
@@ -33,6 +35,9 @@ def astar(grid, start_pos, goal, heuristic, max_g=maxint):
 		current = heappop(heap)
 		current[OPEN] = False
 
+		if current[G] > max_g:
+			continue
+
 		if goal == current[POS]:
 			path = []
 			while current[PARENT_POS] is not None:
@@ -40,22 +45,20 @@ def astar(grid, start_pos, goal, heuristic, max_g=maxint):
 				current = nodes[current[PARENT_POS]]
 			path.reverse()
 
-			return path
+			return path, nodes
 
 		for neighbor_pos in neighbors(current[POS]):
 			neighbor_g = current[G] + cost(neighbor_pos)
 			neighbor = nodes.get(neighbor_pos)
 
-			# todo: move G <= max_g on top?
-			if neighbor is None or (neighbor and neighbor[OPEN] and neighbor_g < neighbor[G] <= max_g):
+			if neighbor is None or (neighbor and neighbor[OPEN] and neighbor_g < neighbor[G]):
 				if neighbor:
 					neighbor[VALID] = False
 
-				# todo: dont recalculate already calculated heuristics
-				nodes[neighbor_pos] = neighbor = node(neighbor_g, neighbor_pos, current[POS])
+				nodes[neighbor_pos] = neighbor = node(neighbor_g, neighbor_pos, current[POS], neighbor[H] if neighbor else None)
 				heappush(heap, neighbor)
 
 		while heap and not heap[0][VALID]:
 			heappop(heap)
 
-	return None
+	return None, nodes

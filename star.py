@@ -34,19 +34,35 @@ def main():
 
 	_manhattan = lambda p: manhattan(p, goal)
 
+	max_g = 10
+
 	t1=time.time()
-	path = a.astar(start, _neigh, _goal, 0, _cost2, _zero)
+	path = a.astar(start, _neigh, _goal, 0, _cost2, _manhattan)
 	t2 = time.time()
-	path2 = a2.astar(
+	path2, nodes = a2.astar(
 		g,
 		start,
 		goal,
-		zero
+		zero,
+		max_g
 	)
 	t3 = time.time()
 
 	print(t2-t1)
 	print(t3 - t2)
+
+	G = 3
+	OPEN = 6
+	for y in xrange(height):
+		for x in xrange(width):
+			if (x,y) not in nodes:
+				print '  ',
+			else:
+				if not nodes[(x, y)][OPEN] and nodes[(x, y)][G] > max_g:
+					print '# ',
+				else:
+					print '. ',
+		print
 
 	if path != path2:
 		print('!!!!!different!!!!!!')

@@ -5,7 +5,7 @@ X, Y = 0, 1
 
 
 def generate(maxval, width, height):
-	return [[(random.randrange(10))+1 for x in range(width)] for y in range(height)]
+	return [[(random.randrange(1))+1 for x in range(width)] for y in range(height)]
 
 
 def neighbours(grid, pos):
