@@ -46,10 +46,12 @@ def astar(grid, start_pos, goal, heuristic, max_g=maxint):
 			neighbor_g = current[G] + cost(neighbor_pos)
 			neighbor = nodes.get(neighbor_pos)
 
+			# todo: move G <= max_g on top?
 			if neighbor is None or (neighbor and neighbor[OPEN] and neighbor_g < neighbor[G] <= max_g):
 				if neighbor:
 					neighbor[VALID] = False
 
+				# todo: dont recalculate already calculated heuristics
 				nodes[neighbor_pos] = neighbor = node(neighbor_g, neighbor_pos, current[POS])
 				heappush(heap, neighbor)
 
