@@ -7,10 +7,6 @@ F, H, ID, G, POS, PARENT_POS, OPEN, VALID = xrange(8)
 X, Y = 0, 1
 
 
-# TODO: use LEVEL's internal grid for A* calculations
-# TODO: particularly for NODES map
-
-
 def astar(grid, start_pos, goal, heuristic, max_g=maxint):
 
 	def neighbors(pos):
@@ -27,7 +23,6 @@ def astar(grid, start_pos, goal, heuristic, max_g=maxint):
 	ids = iter(xrange(maxint))
 
 	start = node(0, start_pos, None)
-	# todo: use level's tiles table
 	nodes = {start_pos: start}
 	heap = [start]
 

@@ -34,7 +34,7 @@ def main():
 
 	_manhattan = lambda p: manhattan(p, goal)
 
-	max_g = 10
+	max_g = 50
 
 	t1=time.time()
 	path = a.astar(start, _neigh, _goal, 0, _cost2, _manhattan)
@@ -43,8 +43,8 @@ def main():
 		g,
 		start,
 		goal,
-		zero,
-		max_g
+		manhattan,
+		max_g,
 	)
 	t3 = time.time()
 
